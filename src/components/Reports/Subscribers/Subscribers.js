@@ -105,6 +105,12 @@ const Subscribers = ({ dependencies: { dopplerApiClient } }) => {
               <SubscriberInfo subscriber={state.subscriber} />
               <Component subscriber={state.subscriber} />
             </div>
+            {
+              section === 'gdpr' && 
+              <div className="dp-cta-links">
+                <a href="#"><span className="ms-icon icon-download"></span> Descarga historial completo</a>
+              </div>
+            }
           </div>
         </div>
       </section>
