@@ -525,6 +525,7 @@ eliminación, seguridad, transferencias transfronterizas y otros temas.
     },
     title: 'Comportamiento histórico del Suscriptor',
     unsubscribed_date: 'Fecha de Remoción:',
+    download_history: 'Descarga historial completo',
   },
   trafficSources: {
     direct: `Directo`,

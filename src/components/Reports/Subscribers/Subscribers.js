@@ -5,7 +5,7 @@ import { Loading } from '../../Loading/Loading';
 import SafeRedirect from '../../SafeRedirect';
 import SubscriberGdprPermissions from '../GDPRPermissions/SubscriberGdprPermissions';
 import SubscriberSentCampaigns from '../SubscriberSentCampaigns/SubscriberSentCampaigns';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { Helmet } from 'react-helmet';
 import SubscriberInfo from '../../shared/SubscriberInfo/SubscriberInfo';
 import { Tabs } from '../../shared/Tabs/Tabs';
@@ -108,7 +108,9 @@ const Subscribers = ({ dependencies: { dopplerApiClient } }) => {
             {
               section === 'gdpr' && 
               <div className="dp-cta-links">
-                <a href="#"><span className="ms-icon icon-download"></span> Descarga historial completo</a>
+                <a href="#"><span className="ms-icon icon-download"></span>
+                  {" "}<FormattedMessage id="subscriber_history.download_history" />
+                </a>
               </div>
             }
           </div>

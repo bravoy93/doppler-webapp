@@ -524,6 +524,7 @@ deletion, security, cross-border data transfers and other issues.
     },
     title: 'Subscriber historical behavior',
     unsubscribed_date: 'Unsubscribed Date:',
+    download_history: 'Download full history',
   },
   trafficSources: {
     direct: `Direct`,
