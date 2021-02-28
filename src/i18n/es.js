@@ -498,6 +498,15 @@ eliminación, seguridad, transferencias transfronterizas y otros temas.
     value_false: 'Rechazado',
     value_none: 'Sin respuesta',
     value_true: 'Aceptado',
+    latest_results: '"Últimos {results_amount} resultados"',
+    consent: 'Consentimiento',
+    modification_source_ip: 'IP origen de modificación',
+    modification_date: 'Fecha de modificación',
+    source_form: 'Formulario de origen',
+    origin_type: {
+      form: 'Formulario',
+      manually: 'Manual',
+    },
   },
   subscriber_history: {
     alt_image: 'Preview de la Campaña',

@@ -34,7 +34,9 @@ const PermissionExpandableRow = ({
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [permissions, setPermissions] = useState(null)
+  const [permissions, setPermissions] = useState(null);
+  const intl = useIntl();
+  const _ = (id, values) => intl.formatMessage({ id }, values);
   
   // TODO: Ask for the 'fieldName' param, where it comes from
 
@@ -115,23 +117,29 @@ const PermissionExpandableRow = ({
         ) : (
           <>
         <td className="dp-latest-results">
-          <span>"Últimos {permissions.length} resultados"</span>
+                <FormattedMessage
+                  id="subscriber_gdpr.latest_results"
+                  tagName="span"
+                  values={{
+                    results_amount: permissions.length,
+                  }}
+                />
         </td>
         <td className="dp-list-results">
           <table className="dp-table-results">
             <thead>
               <tr>
-                <th aria-label="Consentimiento" scope="col">
-                  <span>Consentimiento:</span>
+                <th aria-label={_('subscriber_gdpr.consent')} scope="col">
+                  <FormattedMessage id="subscriber_gdpr.consent" tagName="span" />:
                 </th>
-                <th aria-label="IP origen demodificación" scope="col">
-                  <span>IP origen demodificación:</span>
+                <th aria-label={_('subscriber_gdpr.modification_source_ip')} scope="col">
+                  <FormattedMessage id="subscriber_gdpr.modification_source_ip" tagName="span" />:
                 </th>
-                <th aria-label="Fecha de modificación" scope="col">
-                  <span>Fecha de modificación:</span>
+                <th aria-label={_('subscriber_gdpr.modification_date')} scope="col">
+                  <FormattedMessage id="subscriber_gdpr.modification_date" tagName="span" />:
                 </th>
-                <th aria-label="Formulario de origen" scope="col">
-                  <span>Formulario de origen:</span>
+                <th aria-label={_('subscriber_gdpr.source_form')} scope="col">
+                  <FormattedMessage id="subscriber_gdpr.source_form" tagName="span" />:
                 </th>
               </tr>
             </thead>
@@ -148,7 +156,8 @@ const PermissionExpandableRow = ({
                   <FormattedDate value={date} />
                 </td>
                 <td>
-                  <span>{originType}</span>
+                    <FormattedMessage
+                      id={`subscriber_gdpr.origin_type.${originType.toLowerCase().startsWith('form') ? 'form' : 'manually' }`} />
                 </td>
               </tr>
               })}

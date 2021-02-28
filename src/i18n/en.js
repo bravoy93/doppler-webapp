@@ -497,6 +497,15 @@ deletion, security, cross-border data transfers and other issues.
     value_false: 'Rejected',
     value_none: 'No response',
     value_true: 'Accepted',
+    latest_results: '"Last {results_amount} results"',
+    consent: 'Consent',
+    modification_source_ip: 'Modification source ip',
+    modification_date: 'Modification date',
+    source_form: 'Source form',
+    origin_type: {
+      form: 'Form',
+      manually: 'Manually',
+    },
   },
   subscriber_history: {
     alt_image: 'Campaign Preview',
