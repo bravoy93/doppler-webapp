@@ -1,14 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as S from './SubscriberGdpr.styles';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl, FormattedDate } from 'react-intl';
 import PropTypes from 'prop-types';
+import { Loading } from '../../Loading/Loading';
+import { InjectAppServices } from '../../../services/pure-di';
 
-// TODO: Apply the internacionalization
+// TODO: Apply the internationalization
 
-const PermissionExpandableRow = ({ field }) => {
-  const [expanded, setExpanded] = useState(false);
+const PermissionValue = ({value}) => {
+  const permissionValue = value.toLowerCase()
+  let iconColor = permissionValue === 'none'
+    ? 'grey'
+    : permissionValue === 'true'
+      ? 'green'
+      : 'red'
   
-  // TODO: Fetch the permission history in onComponentDidMount lifecycle
+  return (
+    <>
+      <span className={`ms-icon icon-lock dp-lock-${ iconColor }`} />
+      <FormattedMessage id={`subscriber_gdpr.value_${ permissionValue }`} />
+    </>
+  )
+}
+
+
+const PermissionExpandableRow = ({ 
+  field,
+  email,
+  dependencies: {
+    dopplerApiClient,
+    appConfiguration: { reportsUrl },
+  },
+}) => {
+  const [expanded, setExpanded] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [permissions, setPermissions] = useState(null)
+  
+  // TODO: Ask for the 'fieldName' param, where it comes from
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const fieldName = 'customField'
+      const {success, value} = await dopplerApiClient.getSubscriberPermissionHistory({ email, fieldName })
+      if (success) {
+        setPermissions(value.items)
+      }
+      setLoading(false)
+    }
+    fetchData()
+    return fetchData
+  }, [dopplerApiClient])
 
   /**
    * Toggle the expanded state of the row
@@ -61,8 +102,20 @@ const PermissionExpandableRow = ({ field }) => {
       </tr>
 
       <tr className={`dp-expanded-table ${expanded && 'show'}`}>
+        { loading ? (
+          <>
+            <td />
+            <td>
+              <S.EmptyBox>
+                <Loading />
+              </S.EmptyBox>
+            </td>
+            <td />
+          </>
+        ) : (
+          <>
         <td className="dp-latest-results">
-          <span>"Ultimos 10 resultados"</span>
+          <span>"Últimos {permissions.length} resultados"</span>
         </td>
         <td className="dp-list-results">
           <table className="dp-table-results">
@@ -83,61 +136,28 @@ const PermissionExpandableRow = ({ field }) => {
               </tr>
             </thead>
             <tbody>
-              <tr>
+              {permissions.length && permissions.map(({value, originIP, date, originType}, i) => {
+                return <tr key={i}>
                 <td>
-                  <span>
-                    <span className="ms-icon icon-lock dp-lock-green" />
-                    Aceptado
-                  </span>
+                  <PermissionValue value={value} />
                 </td>
                 <td>
-                  <span>200.5.229.58</span>
+                  {originIP}
                 </td>
                 <td>
-                  <span>22/12/2016</span>
+                  <FormattedDate value={date} />
                 </td>
                 <td>
-                  <span>Formulario 3</span>
+                  <span>{originType}</span>
                 </td>
               </tr>
-              <tr>
-                <td>
-                  <span>
-                    <span className="ms-icon icon-lock dp-lock-red" />
-                    Rechazado
-                  </span>
-                </td>
-                <td>
-                  <span>200.5.229.58</span>
-                </td>
-                <td>
-                  <span>22/12/2016</span>
-                </td>
-                <td>
-                  <span>Formulario 1</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span>
-                    <span className="ms-icon icon-lock dp-lock-grey" />
-                    Sin respuesta
-                  </span>
-                </td>
-                <td>
-                  <span>200.5.229.58</span>
-                </td>
-                <td>
-                  <span>22/12/2016</span>
-                </td>
-                <td>
-                  <span>Formulario 2</span>
-                </td>
-              </tr>
+              })}
             </tbody>
           </table>
         </td>
         <td />
+          </>
+        )}
       </tr>
     </>
   );
@@ -147,4 +167,4 @@ PermissionExpandableRow.propTypes = {
   field: PropTypes.object
 }
 
-export default PermissionExpandableRow;
+export default InjectAppServices(PermissionExpandableRow);

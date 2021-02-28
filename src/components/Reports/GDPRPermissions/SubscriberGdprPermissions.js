@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import { InjectAppServices } from '../../../services/pure-di';
 import { Loading } from '../../Loading/Loading';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -78,7 +78,7 @@ const SubscriberGdprPermissions = ({
               {state.fields.length ? (
                 <>
                   {state.fields.map((field, index) => 
-                    <PermissionExpandableRow field={field} key={index} />
+                    <PermissionExpandableRow field={field} key={index} email={subscriber.email}/>
                    )}
                 </>
               ) : (

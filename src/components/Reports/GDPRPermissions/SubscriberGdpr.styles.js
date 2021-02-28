@@ -1,8 +1,18 @@
 import styled from 'styled-components';
 import { fonts } from '../../styles/fonts';
 
-export const TextColumn = styled.div`
+const TextColumn = styled.div`
   p {
     font-size: ${fonts.fontLvl3};
   }
 `;
+
+const EmptyBox = styled.div`
+  padding: 48px;
+  width: 100%;
+`;
+
+export {
+  TextColumn,
+  EmptyBox,
+}
