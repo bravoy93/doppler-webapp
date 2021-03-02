@@ -32,11 +32,10 @@ const PermissionExpandableRow = ({
   const intl = useIntl();
   const _ = (id, values) => intl.formatMessage({ id }, values);
 
-  // TODO: Ask for the 'fieldName' param, where it comes from
 
   useEffect(() => {
     const fetchData = async () => {
-      const fieldName = 'customField';
+      const fieldName = field.name;
       const { success, value } = await dopplerApiClient.getSubscriberPermissionHistory({
         email,
         fieldName,
