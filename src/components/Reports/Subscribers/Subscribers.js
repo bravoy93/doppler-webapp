@@ -105,14 +105,15 @@ const Subscribers = ({ dependencies: { dopplerApiClient } }) => {
               <SubscriberInfo subscriber={state.subscriber} />
               <Component subscriber={state.subscriber} />
             </div>
-            {
+            {/*
+            TODO: Make the method in the api-client
               section === 'gdpr' && 
               <div className="dp-cta-links">
                 <a href="#"><span className="ms-icon icon-download"></span>
                   {" "}<FormattedMessage id="subscriber_history.download_history" />
                 </a>
               </div>
-            }
+            */}
           </div>
         </div>
       </section>
