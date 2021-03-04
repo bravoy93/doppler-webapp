@@ -32,7 +32,6 @@ const PermissionExpandableRow = ({
   const intl = useIntl();
   const _ = (id, values) => intl.formatMessage({ id }, values);
 
-
   useEffect(() => {
     const fetchData = async () => {
       const fieldName = field.name;

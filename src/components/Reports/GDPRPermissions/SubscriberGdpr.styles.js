@@ -12,7 +12,4 @@ const EmptyBox = styled.div`
   width: 100%;
 `;
 
-export {
-  TextColumn,
-  EmptyBox,
-}
+export { TextColumn, EmptyBox };

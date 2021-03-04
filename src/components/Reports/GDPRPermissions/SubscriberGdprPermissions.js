@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { InjectAppServices } from '../../../services/pure-di';
 import { Loading } from '../../Loading/Loading';
 import { FormattedMessage, useIntl } from 'react-intl';
-import PermissionExpandableRow from "./PermissionExpandableRow";
+import PermissionExpandableRow from './PermissionExpandableRow';
 
 const SubscriberGdprPermissions = ({
   subscriber,
@@ -51,52 +51,52 @@ const SubscriberGdprPermissions = ({
 
   return (
     <>
-    <div>
-      <div className="dp-table-responsive">
-        {state.loading ? (
-          <Loading page />
-        ) : (
-          <table
-            className="dp-c-table dp-nested-table"
-            aria-label={_('subscriber_history.table_result.aria_label_table')}
-            summary={_('subscriber_history.table_result.aria_label_table')}
-          >
-            <thead>
-              <tr>
-                <th scope="col">
-                  <FormattedMessage id="subscriber_gdpr.permission_name" />
-                </th>
-                <th scope="col">
-                  <FormattedMessage id="subscriber_gdpr.permission_description" />
-                </th>
-                <th scope="col">
-                  <FormattedMessage id="subscriber_gdpr.permission_value" />
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {state.fields.length ? (
-                <>
-                  {state.fields.map((field, index) => 
-                    <PermissionExpandableRow field={field} key={index} email={subscriber.email}/>
-                   )}
-                </>
-              ) : (
+      <div>
+        <div className="dp-table-responsive">
+          {state.loading ? (
+            <Loading page />
+          ) : (
+            <table
+              className="dp-c-table dp-nested-table"
+              aria-label={_('subscriber_history.table_result.aria_label_table')}
+              summary={_('subscriber_history.table_result.aria_label_table')}
+            >
+              <thead>
                 <tr>
-                  <td>
-                    <span className="bounceIn">
-                      <FormattedMessage id="subscriber_gdpr.empty_data" />
-                    </span>
-                  </td>
-                  <td></td>
-                  <td></td>
+                  <th scope="col">
+                    <FormattedMessage id="subscriber_gdpr.permission_name" />
+                  </th>
+                  <th scope="col">
+                    <FormattedMessage id="subscriber_gdpr.permission_description" />
+                  </th>
+                  <th scope="col">
+                    <FormattedMessage id="subscriber_gdpr.permission_value" />
+                  </th>
                 </tr>
-              )}
-            </tbody>
-          </table>
-        )}
+              </thead>
+              <tbody>
+                {state.fields.length ? (
+                  <>
+                    {state.fields.map((field, index) => (
+                      <PermissionExpandableRow field={field} key={index} email={subscriber.email} />
+                    ))}
+                  </>
+                ) : (
+                  <tr>
+                    <td>
+                      <span className="bounceIn">
+                        <FormattedMessage id="subscriber_gdpr.empty_data" />
+                      </span>
+                    </td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
-    </div>
     </>
   );
 };
