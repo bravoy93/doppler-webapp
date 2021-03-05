@@ -494,7 +494,7 @@ eliminación, seguridad, transferencias transfronterizas y otros temas.
     permission_description: 'Texto personalizado',
     permission_name: 'Nombre del campo',
     permission_value: 'Valor',
-    title: 'Historial de permisos RGPD del suscriptor',
+    title: 'Historial de permisos RGPD del Suscriptor',
     value_false: 'Rechazado',
     value_none: 'Sin respuesta',
     value_true: 'Aceptado',
