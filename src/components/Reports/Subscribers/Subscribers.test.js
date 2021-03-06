@@ -77,6 +77,38 @@ describe('Subscribers component', () => {
     </MemoryRouter>
   );
 
+  const gdprPermissions = {
+    items: [
+      {
+        subscriberEmail: 'test@test.com',
+        fieldName: 'testField',
+        fieldType: 'permission',
+        date: new Date('2021-02-10T15:22:00.000Z'),
+        value: 'true',
+        originIP: '181.167.226.47',
+        originType: 'Formulario',
+      },
+      {
+        subscriberEmail: 'test@test.com',
+        fieldName: 'testField',
+        fieldType: 'permission',
+        date: new Date('2021-02-05T10:11:24.000Z'),
+        value: 'true',
+        originIP: '181.167.226.30',
+        originType: 'Formulario',
+      },
+      {
+        subscriberEmail: 'test@test.com',
+        fieldName: 'testField',
+        fieldType: 'permission',
+        date: new Date('2021-01-05T01:05:04.123Z'),
+        value: 'true',
+        originIP: '181.167.226.20',
+        originType: 'Manual',
+      },
+    ],
+  };
+
   it('redirect to master subscriber when subscriber does not exist', async () => {
     // Arrange
     const dopplerApiClientDouble = {
@@ -202,6 +234,9 @@ describe('Subscribers component', () => {
       getSubscriberSentCampaigns: async () => {
         return { success: true, value: campaignDeliveryCollection };
       },
+      getSubscriberPermissionHistory: async () => {
+        return { success: true, value: gdprPermissions };
+      },
     };
 
     const dependencies = {
@@ -227,6 +262,9 @@ describe('Subscribers component', () => {
       },
       getSubscriberSentCampaigns: async () => {
         return { success: true, value: campaignDeliveryCollection };
+      },
+      getSubscriberPermissionHistory: async () => {
+        return { success: true, value: gdprPermissions };
       },
     };
 
@@ -254,6 +292,9 @@ describe('Subscribers component', () => {
       },
       getSubscriberSentCampaigns: async () => {
         return { success: true, value: campaignDeliveryCollection };
+      },
+      getSubscriberPermissionHistory: async () => {
+        return { success: true, value: gdprPermissions };
       },
     };
 
