@@ -28,7 +28,7 @@ const PermissionExpandableRow = ({
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [permissions, setPermissions] = useState(null);
+  const [permissions, setPermissions] = useState([]);
   const intl = useIntl();
   const _ = (id, values) => intl.formatMessage({ id }, values);
 
@@ -45,7 +45,6 @@ const PermissionExpandableRow = ({
       setLoading(false);
     };
     fetchData();
-    return fetchData;
   }, [dopplerApiClient]);
 
   /**
