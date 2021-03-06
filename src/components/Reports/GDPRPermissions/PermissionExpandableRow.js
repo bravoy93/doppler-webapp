@@ -24,6 +24,7 @@ const PermissionExpandableRow = ({
   dependencies: {
     dopplerApiClient,
     appConfiguration: { reportsUrl },
+    experimentalFeatures,
   },
 }) => {
   const [expanded, setExpanded] = useState(false);
@@ -31,18 +32,22 @@ const PermissionExpandableRow = ({
   const [permissions, setPermissions] = useState([]);
   const intl = useIntl();
   const _ = (id, values) => intl.formatMessage({ id }, values);
+  const isPermissionHistoryEnabled =
+    experimentalFeatures && experimentalFeatures.getFeature('PermissionHistory');
 
   useEffect(() => {
     const fetchData = async () => {
-      const fieldName = field.name;
-      const { success, value } = await dopplerApiClient.getSubscriberPermissionHistory({
-        email,
-        fieldName,
-      });
-      if (success) {
-        setPermissions(value.items);
+      if (isPermissionHistoryEnabled) {
+        const fieldName = field.name;
+        const { success, value } = await dopplerApiClient.getSubscriberPermissionHistory({
+          email,
+          fieldName,
+        });
+        if (success) {
+          setPermissions(value.items);
+        }
+        setLoading(false);
       }
-      setLoading(false);
     };
     fetchData();
   }, [dopplerApiClient]);
@@ -60,13 +65,15 @@ const PermissionExpandableRow = ({
       <tr>
         <td>
           <span>
-            <a
-              href="#"
-              onClick={toggleExpanded}
-              className={`dp-expand-results ${expanded && 'dp-open-results'}`}
-            >
-              <i className="ms-icon icon-arrow-next"></i>
-            </a>
+            {isPermissionHistoryEnabled && (
+              <a
+                href="#"
+                onClick={toggleExpanded}
+                className={`dp-expand-results ${expanded && 'dp-open-results'}`}
+              >
+                <i className="ms-icon icon-arrow-next"></i>
+              </a>
+            )}
             {field.name}
           </span>
         </td>
@@ -82,79 +89,81 @@ const PermissionExpandableRow = ({
         </td>
       </tr>
 
-      <tr className={`dp-expanded-table ${expanded && 'show'}`}>
-        {loading ? (
-          <>
-            <td />
-            <td>
-              <S.EmptyBox>
-                <Loading />
-              </S.EmptyBox>
-            </td>
-            <td />
-          </>
-        ) : (
-          <>
-            <td className="dp-latest-results">
-              <FormattedMessage
-                id="subscriber_gdpr.latest_results"
-                tagName="span"
-                values={{
-                  results_amount: permissions.length,
-                }}
-              />
-            </td>
-            <td className="dp-list-results">
-              <table className="dp-table-results">
-                <thead>
-                  <tr>
-                    <th aria-label={_('subscriber_gdpr.consent')} scope="col">
-                      <FormattedMessage id="subscriber_gdpr.consent" tagName="span" />:
-                    </th>
-                    <th aria-label={_('subscriber_gdpr.modification_source_ip')} scope="col">
-                      <FormattedMessage
-                        id="subscriber_gdpr.modification_source_ip"
-                        tagName="span"
-                      />
-                      :
-                    </th>
-                    <th aria-label={_('subscriber_gdpr.modification_date')} scope="col">
-                      <FormattedMessage id="subscriber_gdpr.modification_date" tagName="span" />:
-                    </th>
-                    <th aria-label={_('subscriber_gdpr.source_form')} scope="col">
-                      <FormattedMessage id="subscriber_gdpr.source_form" tagName="span" />:
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {permissions.length &&
-                    permissions.map(({ value, originIP, date, originType }, i) => {
-                      return (
-                        <tr key={i}>
-                          <td>
-                            <PermissionValue value={value} />
-                          </td>
-                          <td>{originIP}</td>
-                          <td>
-                            <FormattedDate value={date} />
-                          </td>
-                          <td>
-                            <FormattedMessage
-                              id={`subscriber_gdpr.origin_type.${
-                                originType.toLowerCase().startsWith('form') ? 'form' : 'manually'
-                              }`}
-                            />
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </table>
-            </td>
-            <td />
-          </>
-        )}
-      </tr>
+      {isPermissionHistoryEnabled && (
+        <tr className={`dp-expanded-table ${expanded && 'show'}`}>
+          {loading ? (
+            <>
+              <td />
+              <td>
+                <S.EmptyBox>
+                  <Loading />
+                </S.EmptyBox>
+              </td>
+              <td />
+            </>
+          ) : (
+            <>
+              <td className="dp-latest-results">
+                <FormattedMessage
+                  id="subscriber_gdpr.latest_results"
+                  tagName="span"
+                  values={{
+                    results_amount: permissions.length,
+                  }}
+                />
+              </td>
+              <td className="dp-list-results">
+                <table className="dp-table-results">
+                  <thead>
+                    <tr>
+                      <th aria-label={_('subscriber_gdpr.consent')} scope="col">
+                        <FormattedMessage id="subscriber_gdpr.consent" tagName="span" />:
+                      </th>
+                      <th aria-label={_('subscriber_gdpr.modification_source_ip')} scope="col">
+                        <FormattedMessage
+                          id="subscriber_gdpr.modification_source_ip"
+                          tagName="span"
+                        />
+                        :
+                      </th>
+                      <th aria-label={_('subscriber_gdpr.modification_date')} scope="col">
+                        <FormattedMessage id="subscriber_gdpr.modification_date" tagName="span" />:
+                      </th>
+                      <th aria-label={_('subscriber_gdpr.source_form')} scope="col">
+                        <FormattedMessage id="subscriber_gdpr.source_form" tagName="span" />:
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {permissions.length &&
+                      permissions.map(({ value, originIP, date, originType }, i) => {
+                        return (
+                          <tr key={i}>
+                            <td>
+                              <PermissionValue value={value} />
+                            </td>
+                            <td>{originIP}</td>
+                            <td>
+                              <FormattedDate value={date} />
+                            </td>
+                            <td>
+                              <FormattedMessage
+                                id={`subscriber_gdpr.origin_type.${
+                                  originType.toLowerCase().startsWith('form') ? 'form' : 'manually'
+                                }`}
+                              />
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </table>
+              </td>
+              <td />
+            </>
+          )}
+        </tr>
+      )}
     </>
   );
 };
